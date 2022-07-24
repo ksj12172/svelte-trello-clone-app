@@ -9,6 +9,7 @@ import path from 'path';
 import globals from 'rollup-plugin-node-globals'
 import builtins from 'rollup-plugin-node-builtins'
 import replace from 'rollup-plugin-replace'
+import strip from '@rollup/plugin-strip'
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -96,6 +97,11 @@ export default {
 		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
 		!production && livereload('public'),
+
+		production && strip({
+			include: '**/*.(svelte|js)',
+			functions: ['console.*', 'assert.*'],
+		}),
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify
